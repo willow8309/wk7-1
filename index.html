@@ -1,0 +1,1446 @@
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Word Quest | 중1 핵심 영어 단어 20</title>
+<style>
+:root {
+  --primary:#7656d6;
+  --primary-dark:#5639ac;
+  --purple-light:#eee8ff;
+  --mint:#dcf8ec;
+  --pink:#ffe6ee;
+  --yellow:#fff2c8;
+  --text:#303044;
+  --muted:#77768a;
+  --border:#e8e2f3;
+  --white:#fff;
+}
+* { box-sizing:border-box; }
+body {
+  margin:0;
+  min-height:100vh;
+  font-family:system-ui,-apple-system,"Noto Sans KR",sans-serif;
+  color:var(--text);
+  background:linear-gradient(135deg,#f5efff,#edfaf6);
+}
+button,input { font:inherit; }
+button { cursor:pointer; }
+button:disabled { opacity:.45;cursor:not-allowed; }
+.app {
+  max-width:840px;
+  margin:auto;
+  padding:22px 15px 60px;
+}
+header {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  margin-bottom:22px;
+}
+.logo {
+  font-size:24px;
+  font-weight:900;
+  color:var(--primary);
+}
+.pill {
+  background:white;
+  padding:10px 15px;
+  border-radius:30px;
+  font-weight:800;
+  font-size:13px;
+}
+.panel {
+  background:white;
+  padding:28px;
+  border-radius:26px;
+  box-shadow:0 12px 35px #66539912;
+}
+h1 { font-size:30px;margin:8px 0; }
+h2 { font-size:23px;margin:10px 0 16px; }
+p { line-height:1.7; }
+.sub { color:var(--muted);font-size:14px; }
+.center { text-align:center; }
+.big { font-size:48px;margin:15px 0; }
+.btn {
+  background:var(--primary);
+  color:white;
+  border:0;
+  border-radius:15px;
+  padding:14px 20px;
+  font-weight:800;
+  min-height:48px;
+}
+.btn:hover:not(:disabled) { filter:brightness(.96); }
+.btn.secondary {
+  background:var(--purple-light);
+  color:var(--primary-dark);
+}
+.btn.soft { background:var(--mint);color:#25694c; }
+.btn.outline {
+  background:white;
+  color:var(--primary);
+  border:2px solid #ded3ff;
+}
+.btn.small { padding:8px 13px;min-height:36px; }
+.actions {
+  display:flex;
+  justify-content:center;
+  flex-wrap:wrap;
+  gap:10px;
+  margin-top:22px;
+}
+.stages {
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  gap:8px;
+  margin:22px 0;
+}
+.stage {
+  background:#f1eef7;
+  color:#79738b;
+  border-radius:13px;
+  text-align:center;
+  padding:12px 5px;
+  font-size:12px;
+}
+.stage.active {
+  background:#e1d6ff;
+  color:#5032a2;
+  font-weight:900;
+}
+.stage.done {
+  background:#d7f6e6;
+  color:#236947;
+}
+.progress {
+  height:12px;
+  background:#eeebf5;
+  border-radius:20px;
+  overflow:hidden;
+  margin:12px 0;
+}
+.fill {
+  height:100%;
+  background:linear-gradient(90deg,#8b70e7,#67d6b4);
+  transition:width .3s;
+}
+.question {
+  background:#f8f6ff;
+  border-radius:20px;
+  padding:25px 16px;
+  margin:22px 0;
+  text-align:center;
+}
+.prompt {
+  font-size:14px;
+  font-weight:800;
+  color:#7566a4;
+}
+.target {
+  font-size:clamp(22px,5vw,34px);
+  font-weight:900;
+  line-height:1.55;
+  margin:15px 0;
+  overflow-wrap:anywhere;
+}
+.context {
+  font-size:16px;
+  line-height:1.8;
+}
+.answer {
+  width:100%;
+  padding:16px;
+  border:2px solid #ddd5f2;
+  border-radius:15px;
+  font-size:18px;
+  outline:none;
+  text-align:center;
+}
+.answer:focus { border-color:var(--primary); }
+.feedback {
+  padding:17px;
+  border-radius:16px;
+  margin-top:16px;
+  line-height:1.85;
+}
+.feedback.hint { background:var(--yellow); }
+.feedback.good { background:var(--mint); }
+.feedback.bad { background:var(--pink); }
+.tiles {
+  display:flex;
+  flex-wrap:wrap;
+  gap:9px;
+  justify-content:center;
+  margin:15px 0;
+  min-height:55px;
+}
+.tile {
+  border:2px solid #e2d8ff;
+  background:#f3efff;
+  border-radius:12px;
+  padding:11px 15px;
+  font-weight:750;
+}
+.tile:disabled { opacity:.28; }
+.slot {
+  background:#f8f8fb;
+  border:2px dashed #d5c9ed;
+  border-radius:15px;
+  min-height:70px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-wrap:wrap;
+  gap:8px;
+  padding:10px;
+}
+.wordgrid {
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:10px;
+  margin:20px 0;
+}
+.wordcard {
+  background:#f7f4ff;
+  border-radius:14px;
+  padding:13px 8px;
+  text-align:center;
+  cursor:pointer;
+  border:0;
+  width:100%;
+}
+.wordcard strong {
+  display:block;
+  color:#6044b4;
+  font-size:15px;
+}
+.wordcard span {
+  display:block;
+  margin-top:7px;
+  font-size:12px;
+  color:#656174;
+}
+.stats {
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:10px;
+  margin:20px 0;
+}
+.stat {
+  background:#f5f2ff;
+  border-radius:16px;
+  padding:17px 8px;
+  text-align:center;
+}
+.stat b {
+  display:block;
+  color:var(--primary);
+  font-size:25px;
+}
+.stat span { color:var(--muted);font-size:12px; }
+.reviewitem {
+  padding:13px;
+  border-bottom:1px solid var(--border);
+  text-align:left;
+}
+.notice {
+  background:#f7f4ff;
+  padding:14px;
+  border-radius:14px;
+  font-size:13px;
+  line-height:1.8;
+}
+footer {
+  text-align:center;
+  margin-top:20px;
+  font-size:12px;
+  color:#8c8799;
+}
+@media(max-width:600px) {
+  .panel { padding:18px; }
+  .wordgrid { grid-template-columns:repeat(2,1fr); }
+  .stages { gap:4px; }
+  .stage { font-size:10px;padding:10px 2px; }
+  .logo { font-size:19px; }
+}
+</style>
+</head>
+<body>
+
+<div class="app">
+  <header>
+    <div class="logo">🌈 Word Quest</div>
+    <div class="pill" id="headerScore">⭐ 0 XP</div>
+  </header>
+  <main id="screen"></main>
+  <footer>
+    Middle School English · 20 Words · 5 Levels
+  </footer>
+</div>
+
+<script>
+"use strict";
+
+/*
+WORD DATA
+
+w: 영어 표제어
+k: 대표 한국어 뜻
+aliases: 허용되는 한국어 답
+sentence: 영어 예문
+ko: 예문 해석
+h1: 의미 중심 힌트
+h2: 쉬운 영어 표현 / 유의어 구별
+h3: 철자 힌트
+note: 학습 해설
+
+happen, join, share, spend의 의미 구별을 강화함.
+*/
+
+const WORDS = [
+{
+  w:"arrive",
+  k:"도착하다",
+  aliases:["도착하다","도착"],
+  sentence:"We arrive at school at eight.",
+  ko:"우리는 8시에 학교에 도착한다.",
+  h1:"어떤 장소에 이르게 되는 행동이에요.",
+  h2:"get to a place와 비슷한 뜻이에요.",
+  h3:"a로 시작하고 6글자예요.",
+  note:"arrive at은 학교처럼 특정 장소에 도착할 때 사용해요."
+},
+{
+  w:"borrow",
+  k:"빌리다",
+  aliases:["빌리다","빌려오다"],
+  sentence:"I borrow books from the library.",
+  ko:"나는 도서관에서 책을 빌린다.",
+  h1:"다른 사람의 물건을 잠시 사용한 뒤 돌려줘요.",
+  h2:"take and use something, then return it.",
+  h3:"b로 시작하고 6글자예요.",
+  note:"borrow는 빌리는 것, lend는 빌려주는 것이에요."
+},
+{
+  w:"choose",
+  k:"선택하다",
+  aliases:["선택하다","고르다"],
+  sentence:"I choose the blue bag.",
+  ko:"나는 파란 가방을 선택한다.",
+  h1:"여러 가지 중 하나를 고르는 행동이에요.",
+  h2:"pick과 비슷한 뜻이에요.",
+  h3:"c로 시작하고 6글자예요.",
+  note:"choose는 여러 선택지 중 하나를 고를 때 사용해요."
+},
+{
+  w:"decide",
+  k:"결정하다",
+  aliases:["결정하다","결심하다"],
+  sentence:"I decide to study English.",
+  ko:"나는 영어를 공부하기로 결정한다.",
+  h1:"무엇을 할지 마음을 정하는 거예요.",
+  h2:"make a decision과 관련 있는 표현이에요.",
+  h3:"d로 시작하고 6글자예요.",
+  note:"decide to + 동사원형 형태를 기억하세요."
+},
+{
+  w:"enjoy",
+  k:"즐기다",
+  aliases:["즐기다","즐거워하다"],
+  sentence:"I enjoy playing soccer.",
+  ko:"나는 축구하는 것을 즐긴다.",
+  h1:"어떤 활동을 재미있게 하는 거예요.",
+  h2:"have fun과 관련 있는 표현이에요.",
+  h3:"e로 시작하고 5글자예요.",
+  note:"enjoy 뒤에 동사를 쓰면 -ing 형태가 와요."
+},
+{
+  w:"finish",
+  k:"끝내다",
+  aliases:["끝내다","마치다","완료하다"],
+  sentence:"I finish my homework before dinner.",
+  ko:"나는 저녁 식사 전에 숙제를 끝낸다.",
+  h1:"하던 일을 모두 마치는 거예요.",
+  h2:"complete와 비슷한 뜻이에요.",
+  h3:"f로 시작하고 6글자예요.",
+  note:"finish 뒤에 동사를 쓰면 -ing 형태를 사용해요."
+},
+{
+  w:"forget",
+  k:"잊다",
+  aliases:["잊다","잊어버리다"],
+  sentence:"I sometimes forget my umbrella.",
+  ko:"나는 가끔 우산을 잊어버린다.",
+  h1:"기억해야 할 것을 기억하지 못해요.",
+  h2:"remember의 반대말이에요.",
+  h3:"f로 시작하고 6글자예요.",
+  note:"forget은 기억하지 못하거나 잊어버린다는 뜻이에요."
+},
+{
+  w:"happen",
+  k:"(사건·일이) 발생하다, 벌어지다",
+  aliases:[
+    "발생하다",
+    "벌어지다",
+    "일어나다",
+    "생기다",
+    "사건이 발생하다",
+    "일이 발생하다",
+    "사건이 벌어지다",
+    "일이 벌어지다"
+  ],
+  sentence:"Accidents can happen anywhere.",
+  ko:"사고는 어디에서나 발생할 수 있다.",
+  h1:"사건이나 어떤 일이 생기거나 벌어지는 상황이에요.",
+  h2:"occur, take place와 의미가 비슷해요. 다만 happen은 일상적인 사건에도 자주 사용해요.",
+  h3:"h로 시작하고 6글자예요.",
+  note:"happen은 사건이나 일이 발생한다는 뜻이에요. occur도 비슷하지만 다소 격식 있고, take place는 예정된 행사나 사건에도 자주 쓰여요."
+},
+{
+  w:"invite",
+  k:"초대하다",
+  aliases:["초대하다"],
+  sentence:"I invite my friends to my party.",
+  ko:"나는 친구들을 내 파티에 초대한다.",
+  h1:"다른 사람에게 함께 오라고 요청해요.",
+  h2:"ask someone to come과 비슷해요.",
+  h3:"i로 시작하고 6글자예요.",
+  note:"invite + 사람 + to + 장소 형태를 기억하세요."
+},
+{
+  w:"join",
+  k:"(모임·단체에) 가입하다, 함께 참여하다",
+  aliases:[
+    "가입하다",
+    "참여하다",
+    "참가하다",
+    "합류하다",
+    "함께하다",
+    "모임에 가입하다",
+    "단체에 가입하다",
+    "동아리에 가입하다"
+  ],
+  sentence:"I join the school music club.",
+  ko:"나는 학교 음악 동아리에 가입한다.",
+  h1:"동아리나 모임의 구성원이 되거나 다른 사람들과 함께해요.",
+  h2:"become a member of와 비슷해요. attend는 행사에 참석하다, participate in은 활동에 참여하다라는 의미에 더 초점을 둬요.",
+  h3:"j로 시작하고 4글자예요.",
+  note:"join은 모임이나 단체에 가입하거나 다른 사람들과 함께한다는 뜻이에요. join the club처럼 전치사 없이 바로 목적어를 쓸 수 있어요."
+},
+{
+  w:"keep",
+  k:"(상태를) 유지하다",
+  aliases:["유지하다","지키다","보관하다","계속하다"],
+  sentence:"I keep my room clean.",
+  ko:"나는 내 방을 깨끗하게 유지한다.",
+  h1:"어떤 상태가 계속되게 해요.",
+  h2:"continue 또는 maintain과 관련 있는 의미예요.",
+  h3:"k로 시작하고 4글자예요.",
+  note:"keep + 목적어 + 형용사는 어떤 상태를 유지한다는 뜻이에요."
+},
+{
+  w:"learn",
+  k:"배우다",
+  aliases:["배우다","익히다","학습하다"],
+  sentence:"I learn new words every day.",
+  ko:"나는 매일 새로운 단어를 배운다.",
+  h1:"새로운 지식이나 기술을 익혀요.",
+  h2:"study와 관련 있지만 완전히 같은 뜻은 아니에요.",
+  h3:"l로 시작하고 5글자예요.",
+  note:"learn은 학습을 통해 지식이나 기술을 익히는 거예요."
+},
+{
+  w:"leave",
+  k:"(장소를) 떠나다",
+  aliases:["떠나다","출발하다","남기다"],
+  sentence:"I leave home at seven.",
+  ko:"나는 7시에 집을 떠난다.",
+  h1:"있던 장소에서 다른 곳으로 가요.",
+  h2:"go away from a place와 비슷해요.",
+  h3:"l로 시작하고 5글자예요.",
+  note:"leave home은 집을 떠나다라는 뜻이에요."
+},
+{
+  w:"listen",
+  k:"(주의해서) 듣다",
+  aliases:["듣다","귀기울이다","귀를 기울이다"],
+  sentence:"I listen to music after school.",
+  ko:"나는 방과 후에 음악을 듣는다.",
+  h1:"귀를 기울여 소리를 들어요.",
+  h2:"hear와 달리 의도적으로 듣는 행동이에요.",
+  h3:"l로 시작하고 6글자예요.",
+  note:"listen to + 대상 형태를 기억하세요."
+},
+{
+  w:"need",
+  k:"필요하다",
+  aliases:["필요하다","필요로하다","필요로 하다"],
+  sentence:"I need some water.",
+  ko:"나는 물이 조금 필요하다.",
+  h1:"무언가가 꼭 있어야 하는 상황이에요.",
+  h2:"must have와 관련 있는 의미예요.",
+  h3:"n으로 시작하고 4글자예요.",
+  note:"need 뒤에는 명사 또는 to부정사가 올 수 있어요."
+},
+{
+  w:"practice",
+  k:"연습하다",
+  aliases:["연습하다","훈련하다"],
+  sentence:"I practice English every morning.",
+  ko:"나는 매일 아침 영어를 연습한다.",
+  h1:"더 잘하기 위해 반복해서 해요.",
+  h2:"do something again and again.",
+  h3:"p로 시작하고 8글자예요.",
+  note:"practice 뒤에 동사를 쓰면 -ing 형태를 사용해요."
+},
+{
+  w:"remember",
+  k:"기억하다",
+  aliases:["기억하다","생각해내다"],
+  sentence:"I remember my teacher's name.",
+  ko:"나는 선생님의 이름을 기억한다.",
+  h1:"과거에 알았던 것을 머릿속에 간직해요.",
+  h2:"forget의 반대말이에요.",
+  h3:"r로 시작하고 8글자예요.",
+  note:"remember는 잊지 않고 기억한다는 뜻이에요."
+},
+{
+  w:"share",
+  k:"(다른 사람과) 함께 쓰다, 나누어 가지다",
+  aliases:[
+    "공유하다",
+    "나누다",
+    "함께쓰다",
+    "함께 사용하다",
+    "나누어 가지다",
+    "나눠 가지다",
+    "나눠 쓰다",
+    "함께 가지다"
+  ],
+  sentence:"I share my snacks with my friends.",
+  ko:"나는 친구들과 간식을 나누어 먹는다.",
+  h1:"자신이 가진 것을 다른 사람과 함께 사용하거나 나누어 가져요.",
+  h2:"share는 함께 쓰거나 갖는 것에 초점을 두고, divide는 하나를 여러 부분으로 나누는 행동에 초점을 둬요.",
+  h3:"s로 시작하고 5글자예요.",
+  note:"share A with B는 A를 B와 함께 쓰거나 나누어 가진다는 뜻이에요. divide는 전체를 부분으로 나누는 것이므로 의미의 초점이 달라요."
+},
+{
+  w:"spend",
+  k:"(시간·돈을) 쓰다, 소비하다",
+  aliases:[
+    "소비하다",
+    "지출하다",
+    "시간을 쓰다",
+    "돈을 쓰다",
+    "시간을 보내다",
+    "시간을 들이다",
+    "돈을 지출하다",
+    "시간이나 돈을 쓰다",
+    "시간이나 돈을 소비하다"
+  ],
+  sentence:"I spend an hour on homework.",
+  ko:"나는 숙제하는 데 한 시간을 쓴다.",
+  h1:"시간을 어떤 활동에 사용하거나 돈을 어떤 것에 사용해요.",
+  h2:"spend time, spend money처럼 사용해요. write는 글을 쓰는 것이고, use는 더 일반적인 '사용하다'예요.",
+  h3:"s로 시작하고 5글자예요.",
+  note:"spend는 시간이나 돈을 쓰는 상황에서 사용해요. spend + 시간 + on + 명사, spend + 시간 + -ing 형태를 기억하세요."
+},
+{
+  w:"understand",
+  k:"이해하다",
+  aliases:["이해하다","알아듣다"],
+  sentence:"I understand the question.",
+  ko:"나는 그 질문을 이해한다.",
+  h1:"어떤 말이나 내용의 의미를 알아요.",
+  h2:"know what something means.",
+  h3:"u로 시작하고 10글자예요.",
+  note:"understand는 뜻이나 상황을 이해한다는 의미예요."
+}
+];
+
+const LEVELS = [
+  {
+    name:"뜻 → 영어",
+    icon:"🌱",
+    desc:"한국어 뜻을 보고 영어 단어 입력"
+  },
+  {
+    name:"영어 → 뜻",
+    icon:"🌼",
+    desc:"영어 단어를 보고 한국어 뜻 입력"
+  },
+  {
+    name:"문맥 빈칸",
+    icon:"🌿",
+    desc:"영어 문장의 빈칸 완성"
+  },
+  {
+    name:"어순 배열",
+    icon:"🌻",
+    desc:"영어 단어 카드를 올바르게 배열"
+  },
+  {
+    name:"문장 영작",
+    icon:"🏆",
+    desc:"한국어 문장을 보고 영어로 영작"
+  }
+];
+
+const STORAGE_KEY="wordquest_middle1_updated_v2";
+
+function freshState(){
+  return {
+    level:0,
+    index:0,
+    xp:0,
+    completed:[],
+    mistakes:{},
+    mastered:{},
+    streak:0
+  };
+}
+
+function loadState(){
+  try {
+    const saved=JSON.parse(localStorage.getItem(STORAGE_KEY));
+    if(
+      saved &&
+      typeof saved.level==="number" &&
+      saved.level>=0 &&
+      saved.level<=5 &&
+      typeof saved.index==="number" &&
+      saved.index>=0 &&
+      saved.index<20 &&
+      saved.mistakes &&
+      saved.mastered &&
+      Array.isArray(saved.completed)
+    ){
+      return saved;
+    }
+  }catch(e){}
+  return freshState();
+}
+
+let state=loadState();
+let current=null;
+let attempt=0;
+let selected=[];
+let activeTiles=[];
+let showingAnswer=false;
+let reviewMode=false;
+let reviewQueue=[];
+let reviewIndex=0;
+let hadError=false;
+
+function $(id){
+  return document.getElementById(id);
+}
+
+function saveState(){
+  try {
+    localStorage.setItem(STORAGE_KEY,JSON.stringify(state));
+  }catch(e){}
+}
+
+function escapeHTML(value){
+  return String(value).replace(/[&<>"']/g,c=>({
+    "&":"&amp;",
+    "<":"&lt;",
+    ">":"&gt;",
+    '"':"&quot;",
+    "'":"&#39;"
+  })[c]);
+}
+
+function normalizeEnglish(text){
+  return String(text)
+    .toLowerCase()
+    .replace(/[.,!?'"’]/g,"")
+    .replace(/\s+/g," ")
+    .trim();
+}
+
+function normalizeKorean(text){
+  return String(text)
+    .replace(/[\s.,!?()·]/g,"")
+    .trim();
+}
+
+function shuffle(items){
+  const result=[...items];
+  for(let i=result.length-1;i>0;i--){
+    const j=Math.floor(Math.random()*(i+1));
+    [result[i],result[j]]=[result[j],result[i]];
+  }
+  return result;
+}
+
+function speak(text){
+  if(!("speechSynthesis" in window)){
+    alert("이 브라우저에서는 음성 재생을 지원하지 않아요.");
+    return;
+  }
+  speechSynthesis.cancel();
+  const utterance=new SpeechSynthesisUtterance(text);
+  utterance.lang="en-US";
+  utterance.rate=.82;
+  speechSynthesis.speak(utterance);
+}
+
+function updateHeader(){
+  $("headerScore").textContent="⭐ "+state.xp+" XP";
+}
+
+function stageHTML(level){
+  return `
+  <div class="stages">
+    ${LEVELS.map((stage,i)=>`
+      <div class="stage ${
+        i===level?"active":i<level?"done":""
+      }">
+        ${stage.icon}<br>${i+1}단계
+      </div>
+    `).join("")}
+  </div>`;
+}
+
+function wordCards(){
+  return `
+  <div class="wordgrid">
+    ${WORDS.map((word,i)=>`
+      <button class="wordcard" onclick="speak(WORDS[${i}].w)">
+        <strong>${escapeHTML(word.w)} 🔊</strong>
+        <span>${escapeHTML(word.k)}</span>
+      </button>
+    `).join("")}
+  </div>`;
+}
+
+function home(){
+  reviewMode=false;
+  current=null;
+  updateHeader();
+
+  const finished=state.level>=5;
+
+  $("screen").innerHTML=`
+  <section class="panel">
+    <div class="center">
+      <div class="big">🚀</div>
+      <h1>20 Words, 5 Levels!</h1>
+      <p class="sub">중학교 1학년 영어 어휘 챌린지</p>
+      <p>
+        단어의 뜻을 이해하고,<br>
+        문장 속에서 사용하고,<br>
+        마지막에는 직접 영작해 보세요!
+      </p>
+    </div>
+
+    ${stageHTML(Math.min(state.level,4))}
+
+    <div class="stats">
+      <div class="stat">
+        <b>${state.xp}</b>
+        <span>획득 XP</span>
+      </div>
+      <div class="stat">
+        <b>${state.completed.length}</b>
+        <span>완료 단계</span>
+      </div>
+      <div class="stat">
+        <b>${Object.keys(state.mistakes).length}</b>
+        <span>복습 단어</span>
+      </div>
+    </div>
+
+    <div class="notice">
+      💡 틀려도 괜찮아요!<br>
+      정답을 바로 알려주지 않고 힌트를 제공해요.
+      단서를 활용해 다시 도전해 보세요.
+    </div>
+
+    <div class="actions">
+      <button class="btn" onclick="start()">
+        ${
+          finished?"🏆 최종 결과 보기":
+          state.index>0?"▶ 이어서 학습하기":
+          "▶ 학습 시작"
+        }
+      </button>
+      <button class="btn secondary" onclick="showWords()">
+        📚 단어 미리보기
+      </button>
+      <button class="btn soft" onclick="startReview()">
+        🔁 오답 복습
+      </button>
+    </div>
+
+    <p class="sub center">
+      학습 진도는 현재 브라우저에 자동 저장됩니다.
+    </p>
+  </section>`;
+}
+
+function showWords(){
+  $("screen").innerHTML=`
+  <section class="panel">
+    <h2>📚 오늘의 핵심 단어 20개</h2>
+    <p class="sub">
+      단어를 누르면 영어 발음을 들을 수 있어요.
+    </p>
+    ${wordCards()}
+    <div class="actions">
+      <button class="btn" onclick="home()">돌아가기</button>
+    </div>
+  </section>`;
+}
+
+function start(){
+  if(state.level>=5){
+    finalResult();
+    return;
+  }
+  reviewMode=false;
+  showQuestion();
+}
+
+function getWord(){
+  return reviewMode
+    ? WORDS[reviewQueue[reviewIndex].index]
+    : WORDS[state.index];
+}
+
+function getLevel(){
+  return reviewMode
+    ? reviewQueue[reviewIndex].level
+    : state.level;
+}
+
+function showQuestion(){
+  attempt=0;
+  selected=[];
+  activeTiles=[];
+  showingAnswer=false;
+  hadError=false;
+  renderQuestion();
+}
+
+function blankSentence(word){
+  const escaped=word.w.replace(/[.*+?^${}()|[\]\\]/g,"\\$&");
+  return word.sentence.replace(
+    new RegExp("\\b"+escaped+"\\b","i"),
+    "________"
+  );
+}
+
+function renderQuestion(){
+  const word=getWord();
+  const level=getLevel();
+  current=word;
+  updateHeader();
+
+  const number=reviewMode?reviewIndex+1:state.index+1;
+  const total=reviewMode?reviewQueue.length:20;
+  const percent=(number-1)/total*100;
+
+  let prompt="";
+  let target="";
+  let extra="";
+
+  if(level===0){
+    prompt="한국어 뜻을 영어 단어로!";
+    target=word.k;
+  }
+
+  if(level===1){
+    prompt="영어 단어의 뜻을 입력하세요.";
+    target=word.w;
+  }
+
+  if(level===2){
+    prompt="문맥에 맞는 영어 단어를 입력하세요.";
+    target=blankSentence(word);
+    extra=`
+      <p class="sub">${escapeHTML(word.ko)}</p>
+    `;
+  }
+
+  if(level===3){
+    prompt="단어를 올바른 순서로 배열하세요.";
+    target=word.ko;
+  }
+
+  if(level===4){
+    prompt="한국어 문장을 영어로 쓰세요.";
+    target=word.ko;
+  }
+
+  let task="";
+
+  if(level===3){
+    const tokens=word.sentence.split(/\s+/);
+    activeTiles=shuffle(tokens.map((text,index)=>({
+      text,index
+    })));
+
+    task=`
+      <div class="slot" id="slot">
+        <span class="sub">여기에 문장을 배열하세요.</span>
+      </div>
+      <div class="tiles" id="tiles"></div>
+      <div class="actions">
+        <button class="btn secondary" onclick="undoTile()">
+          ↩ 한 단어 취소
+        </button>
+        <button class="btn outline" onclick="clearTiles()">
+          다시 배열
+        </button>
+      </div>
+    `;
+  }else{
+    task=`
+      <input
+        id="answer"
+        class="answer"
+        type="text"
+        autocomplete="off"
+        autocapitalize="off"
+        spellcheck="false"
+        placeholder="${
+          level===1?"한국어 뜻 입력":"영어로 입력"
+        }"
+        onkeydown="if(event.key==='Enter')checkAnswer()"
+      >
+    `;
+  }
+
+  $("screen").innerHTML=`
+  <section class="panel">
+    <div class="sub">
+      ${
+        reviewMode?"🔁 오답 복습":
+        "LEVEL "+(level+1)+" · "+LEVELS[level].name
+      }
+    </div>
+
+    ${stageHTML(level)}
+
+    <div style="display:flex;justify-content:space-between">
+      <strong>${number} / ${total}</strong>
+      <span class="sub" id="attemptLabel">시도 0/3</span>
+    </div>
+
+    <div class="progress">
+      <div class="fill" style="width:${percent}%"></div>
+    </div>
+
+    <div class="question">
+      <div class="prompt">${prompt}</div>
+      <div class="target">${escapeHTML(target)}</div>
+      ${extra}
+
+      ${
+        level===1||level===2
+        ? `<button class="btn small secondary"
+             onclick="speak(${
+               level===1?"current.w":"current.sentence"
+             })">🔊 듣기</button>`
+        : ""
+      }
+    </div>
+
+    ${task}
+
+    <div id="feedbackArea" aria-live="polite"></div>
+
+    <div class="actions" id="submitArea">
+      <button class="btn" onclick="checkAnswer()">
+        정답 확인 →
+      </button>
+    </div>
+
+    <div class="actions">
+      <button class="btn small outline" onclick="home()">
+        🏠 홈
+      </button>
+    </div>
+  </section>`;
+
+  if(level===3){
+    renderTiles();
+  }else{
+    $("answer").focus();
+  }
+}
+
+function renderTiles(){
+  const tiles=$("tiles");
+  const slot=$("slot");
+
+  if(!tiles||!slot)return;
+
+  tiles.innerHTML=activeTiles.map((tile,i)=>`
+    <button
+      class="tile"
+      ${selected.includes(i)?"disabled":""}
+      onclick="addTile(${i})"
+    >${escapeHTML(tile.text)}</button>
+  `).join("");
+
+  slot.innerHTML=selected.length
+    ? selected.map((id,pos)=>`
+        <button class="tile" onclick="removeTile(${pos})">
+          ${escapeHTML(activeTiles[id].text)}
+        </button>
+      `).join("")
+    : `<span class="sub">
+         단어를 순서대로 눌러 보세요.
+       </span>`;
+}
+
+function addTile(index){
+  if(showingAnswer||selected.includes(index))return;
+  selected.push(index);
+  renderTiles();
+}
+
+function removeTile(position){
+  if(showingAnswer)return;
+  selected.splice(position,1);
+  renderTiles();
+}
+
+function undoTile(){
+  if(showingAnswer)return;
+  selected.pop();
+  renderTiles();
+}
+
+function clearTiles(){
+  if(showingAnswer)return;
+  selected=[];
+  renderTiles();
+}
+
+function userAnswer(){
+  if(getLevel()===3){
+    return selected.map(i=>activeTiles[i].text).join(" ");
+  }
+  return $("answer")?.value||"";
+}
+
+function isCorrect(value,word,level){
+  if(level===1){
+    return word.aliases.some(
+      alias=>normalizeKorean(value)===normalizeKorean(alias)
+    );
+  }
+
+  const expected=level===0||level===2
+    ? word.w
+    : word.sentence;
+
+  return normalizeEnglish(value)===normalizeEnglish(expected);
+}
+
+function showFeedback(type,message){
+  const area=$("feedbackArea");
+  if(!area)return;
+
+  area.innerHTML=`
+    <div class="feedback ${type}">
+      ${message}
+    </div>
+  `;
+}
+
+function hintFor(word,level,number){
+  if(level===0||level===2){
+    return [word.h1,word.h2,word.h3][number-1];
+  }
+
+  if(level===1){
+    if(number===1){
+      return "예문을 살펴보세요: "+word.sentence;
+    }
+    if(number===2){
+      return word.h1;
+    }
+    return "뜻을 구별해 보세요. "+word.h2;
+  }
+
+  const tokens=word.sentence.split(" ");
+
+  if(level===3){
+    if(number===1){
+      return "영어 평서문은 보통 주어 + 동사 순서로 시작해요.";
+    }
+    if(number===2){
+      return "첫 단어는 '"+tokens[0]+"'예요.";
+    }
+    return "처음 두 단어는 '"+
+      tokens.slice(0,2).join(" ")+"'예요.";
+  }
+
+  if(level===4){
+    if(number===1){
+      return "먼저 주어와 동사를 찾아보세요.";
+    }
+    if(number===2){
+      return "첫 부분은 '"+
+        tokens.slice(0,2).join(" ")+"'예요.";
+    }
+    return "문장 구조: "+
+      tokens.map((token,i)=>
+        i<3?token:token.replace(/[A-Za-z]/g,"_")
+      ).join(" ");
+  }
+
+  return "";
+}
+
+function checkAnswer(){
+  if(showingAnswer)return;
+
+  const word=getWord();
+  const level=getLevel();
+  const value=userAnswer().trim();
+
+  if(!value){
+    showFeedback(
+      "hint",
+      "✏️ 먼저 답을 입력하거나 단어를 배열해 보세요."
+    );
+    return;
+  }
+
+  if(isCorrect(value,word,level)){
+    success();
+    return;
+  }
+
+  attempt++;
+  hadError=true;
+  state.streak=0;
+  state.mistakes[word.w]=(state.mistakes[word.w]||0)+1;
+  saveState();
+
+  $("attemptLabel").textContent="시도 "+attempt+"/3";
+
+  if(attempt<3){
+    showFeedback(
+      "hint",
+      `<strong>💡 다시 생각해 볼까요? (${attempt}/3)</strong>
+       <p>${escapeHTML(hintFor(word,level,attempt))}</p>
+       정답은 아직 공개하지 않을게요.
+       단서를 보고 다시 도전하세요!`
+    );
+
+    if(level!==3&&$("answer")){
+      $("answer").focus();
+    }
+  }else{
+    showFeedback(
+      "bad",
+      `<strong>🌷 세 번 도전했어요!</strong>
+       <p>${escapeHTML(hintFor(word,level,3))}</p>
+       마지막 단서를 확인하고 정답을 살펴보세요.`
+    );
+
+    $("submitArea").innerHTML=`
+      <button class="btn" onclick="revealAnswer()">
+        정답과 해설 확인
+      </button>
+    `;
+  }
+}
+
+function success(){
+  const word=getWord();
+
+  const earned=attempt===0?15:attempt===1?10:7;
+
+  state.xp+=earned;
+  state.streak++;
+  state.mastered[word.w]=(state.mastered[word.w]||0)+1;
+
+  saveState();
+  showingAnswer=true;
+
+  showFeedback(
+    "good",
+    `<strong>🎉 정답이에요! +${earned} XP</strong>
+     <p>${escapeHTML(word.note)}</p>
+     <strong>${escapeHTML(word.sentence)}</strong>
+     <p>${escapeHTML(word.ko)}</p>`
+  );
+
+  $("submitArea").innerHTML=`
+    <button class="btn secondary"
+      onclick="speak(current.sentence)">
+      🔊 문장 듣기
+    </button>
+    <button class="btn" onclick="nextQuestion()">
+      다음 문제 →
+    </button>
+  `;
+
+  if($("answer"))$("answer").disabled=true;
+  if(getLevel()===3)renderTiles();
+}
+
+function revealAnswer(){
+  const word=getWord();
+  const level=getLevel();
+
+  const correct=level===1
+    ? word.k
+    : level===0||level===2
+      ? word.w
+      : word.sentence;
+
+  showingAnswer=true;
+
+  showFeedback(
+    "bad",
+    `<strong>📖 정답: ${escapeHTML(correct)}</strong>
+     <p>${escapeHTML(word.note)}</p>
+     <strong>예문:</strong> ${escapeHTML(word.sentence)}
+     <p><strong>해석:</strong> ${escapeHTML(word.ko)}</p>`
+  );
+
+  $("submitArea").innerHTML=`
+    <button class="btn secondary"
+      onclick="speak(current.sentence)">
+      🔊 문장 듣기
+    </button>
+    <button class="btn" onclick="nextQuestion()">
+      다음 문제 →
+    </button>
+  `;
+
+  if($("answer"))$("answer").disabled=true;
+}
+
+function nextQuestion(){
+  if(reviewMode){
+    reviewIndex++;
+
+    if(reviewIndex>=reviewQueue.length){
+      reviewFinished();
+    }else{
+      showQuestion();
+    }
+    return;
+  }
+
+  state.index++;
+
+  if(state.index>=20){
+    state.completed.push(state.level);
+    state.level++;
+    state.index=0;
+    saveState();
+
+    if(state.level>=5){
+      finalResult();
+    }else{
+      levelFinished();
+    }
+  }else{
+    saveState();
+    showQuestion();
+  }
+}
+
+function levelFinished(){
+  const previous=state.level-1;
+
+  $("screen").innerHTML=`
+  <section class="panel center">
+    <div class="big">🎊</div>
+    <h1>${previous+1}단계 완료!</h1>
+    <p>${LEVELS[previous].desc} 미션을 마쳤어요.</p>
+    <p>
+      다음 단계에서는 조금 더 어려운 활동에
+      도전해 보세요.
+    </p>
+
+    ${stageHTML(state.level)}
+
+    <div class="actions">
+      <button class="btn" onclick="start()">
+        다음 단계 시작 →
+      </button>
+      <button class="btn secondary" onclick="home()">
+        홈으로
+      </button>
+    </div>
+  </section>`;
+}
+
+function startReview(){
+  const ids=Object.keys(state.mistakes);
+
+  if(!ids.length){
+    $("screen").innerHTML=`
+    <section class="panel center">
+      <h2>🌟 아직 복습할 오답이 없어요!</h2>
+      <p>학습을 시작하면 틀린 단어가 이곳에 모여요.</p>
+      <button class="btn" onclick="home()">홈으로</button>
+    </section>`;
+    return;
+  }
+
+  reviewMode=true;
+  reviewQueue=[];
+
+  ids.forEach(id=>{
+    const index=WORDS.findIndex(word=>word.w===id);
+    if(index<0)return;
+
+    const highest=Math.min(state.level,4);
+
+    reviewQueue.push({
+      index,
+      level:Math.max(0,highest)
+    });
+  });
+
+  reviewQueue=shuffle(reviewQueue);
+  reviewIndex=0;
+  showQuestion();
+}
+
+function reviewFinished(){
+  $("screen").innerHTML=`
+  <section class="panel center">
+    <div class="big">💪</div>
+    <h2>복습 완료!</h2>
+    <p>어려웠던 단어를 다시 연습했어요.</p>
+    <p class="sub">
+      오답 기록은 계속 보관되므로
+      반복해서 복습할 수 있어요.
+    </p>
+    <div class="actions">
+      <button class="btn" onclick="home()">홈으로</button>
+    </div>
+  </section>`;
+}
+
+function finalResult(){
+  updateHeader();
+
+  const mistakes=Object.entries(state.mistakes)
+    .sort((a,b)=>b[1]-a[1]);
+
+  $("screen").innerHTML=`
+  <section class="panel center">
+    <div class="big">🏆</div>
+    <h1>Word Quest Complete!</h1>
+    <p>5단계, 100문제 학습을 모두 마쳤어요!</p>
+
+    <div class="stats">
+      <div class="stat">
+        <b>${state.xp}</b>
+        <span>총 XP</span>
+      </div>
+      <div class="stat">
+        <b>100</b>
+        <span>완료 문제</span>
+      </div>
+      <div class="stat">
+        <b>${mistakes.length}</b>
+        <span>복습 단어</span>
+      </div>
+    </div>
+
+    <h2>📋 나의 복습 목록</h2>
+
+    ${
+      mistakes.length
+      ? mistakes.map(([id,count])=>{
+          const word=WORDS.find(w=>w.w===id);
+          return `
+          <div class="reviewitem">
+            <strong>${escapeHTML(id)}</strong>
+            · ${escapeHTML(word?.k||"")}
+            · 오답 ${count}회
+          </div>`;
+        }).join("")
+      : "<p>아직 기록된 오답이 없어요.</p>"
+    }
+
+    <div class="actions">
+      <button class="btn" onclick="startReview()">
+        🔁 오답 다시 풀기
+      </button>
+      <button class="btn secondary" onclick="home()">
+        홈으로
+      </button>
+      <button class="btn outline" onclick="exportResults()">
+        📄 결과 저장
+      </button>
+    </div>
+
+    <div class="actions">
+      <button class="btn small outline"
+        onclick="resetProgress()">
+        학습 처음부터 다시 하기
+      </button>
+    </div>
+  </section>`;
+}
+
+function exportResults(){
+  const lines=[
+    "Word Quest 학습 결과",
+    "획득 XP: "+state.xp,
+    "완료 단계: "+state.completed.length,
+    "",
+    "단어,뜻,오답 횟수,정답 횟수"
+  ];
+
+  WORDS.forEach(word=>{
+    const values=[
+      word.w,
+      word.k,
+      state.mistakes[word.w]||0,
+      state.mastered[word.w]||0
+    ];
+
+    lines.push(values.map(value=>
+      '"'+String(value).replace(/"/g,'""')+'"'
+    ).join(","));
+  });
+
+  const blob=new Blob(
+    ["\uFEFF"+lines.join("\n")],
+    {type:"text/csv;charset=utf-8"}
+  );
+
+  const url=URL.createObjectURL(blob);
+  const link=document.createElement("a");
+
+  link.href=url;
+  link.download="wordquest_results.csv";
+  link.click();
+
+  setTimeout(()=>URL.revokeObjectURL(url),1000);
+}
+
+function resetProgress(){
+  if(!confirm("모든 학습 진도를 초기화할까요?"))return;
+
+  state=freshState();
+  saveState();
+  home();
+}
+
+home();
+</script>
+</body>
+</html>
